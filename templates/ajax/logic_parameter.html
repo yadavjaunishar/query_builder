@@ -1,0 +1,89 @@
+
+{% for entry in parametername %}
+<div  class="row mt-2 ">
+    <div class="col-md-4">
+        <h6>{{ entry.param_name }}</h6>
+        <input type="hidden" value="{{ entry.param_name }}" class="parametername"  name="parameter_name[]" id="">
+        <input type="hidden" value="{{entry.param_type_id}}" class="paramtypeid"  id="paramid">
+    </div>
+    {% if entry.param_type_id == 4  %}
+        <div class="col-md-4">
+            <select name="operator_name[]" class="form-control operatorname">
+                <option value="">Select Operator</option>
+                <option value="<"><</option>
+                <option value=">">></option>
+                <option value="=">=</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="param_value_name[]" onchange="myfunctionsss()" class="form-control form-select parametervalue">
+                <option value="" selected>Select Your Value</option>
+                {% for param_option in param_option_data %}
+                    {% for option in param_option.param_options %}
+                        <option value="{{ option.option_id }}">{{ option.option_name }}</option>
+                    {% endfor %}
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+    {% if entry.param_type_id == 2  %}
+        <div class="col-md-4">
+            <select name="operator_name[]" class="form-control operatorname">
+                <option value="">Select Operator</option>
+                <option value="<"><</option>
+                <option value=">">></option>
+                <option value="=">=</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            {% for param_option in param_option_data %}
+            {% for option in param_option.param_options %}
+                <!-- <option value="{{ option.option_id }}">{{ option.option_name }}</option> -->
+                <input type="text" class="form-control parametervalue" value="{{ option.option_name }}" name="param_value_name[]" id="">
+            {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif  %}
+    {% if entry.param_type_id == 3  %}
+        <div class="col-md-4">
+            <select name="operator_name[]" class="form-control operatorname">
+                <option value="">Select Operator</option>
+                <option value="<"><</option>
+                <option value=">">></option>
+                <option value="=">=</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            {% for param_option in param_option_data %}
+            {% for option in param_option.param_options %}
+                <!-- <option value="{{ option.option_id }}">{{ option.option_name }}</option> -->
+                <input type="date" class="form-control parametervalue" value="{{ option.option_name }}" name="param_value_name[]" id="">
+            {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif  %}
+    {% if entry.param_type_id == 1  %}
+        <div class="col-md-4">
+            {% for param_option in param_option_data %}
+            {% for option in param_option.param_options %}
+            <select name="operator_name[]" class="form-control operatorname">
+                <option value="">Select Operator</option>
+                <option value="<"><</option>
+                <option value=">">></option>
+                <option value="=">=</option>
+            </select>
+            {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            {% for param_option in param_option_data %}
+            {% for option in param_option.param_options %}
+                <!-- <option value="{{ option.option_id }}">{{ option.option_name }}</option> -->
+                <input type="text" class="form-control " value="{{ option.option_name }}" name="param_value_name[]" id="">
+            {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif  %}
+</div>
+{% endfor %}
+

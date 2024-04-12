@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Montserrat';
+    src:
+        url('../fonts/Montserrat-Regular.woff2') format('woff2'),
+        url('../fonts/Montserrat-Regular.woff') format('woff');
+}
+
+body {
+    font-family: 'Montserrat';
+    font-weight: 400;
+}
+
+.agrotutor-logo {
+    height: 80px;
+    width: 80px;
+}
+
+header {
+    border-bottom: 2px solid #000;
+}
+
+.form-check-input:checked {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.hide {
+    display: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    cursor: pointer;
+}
+
+/* Add your custom CSS styles here */
+.checkbox-value {
+    display: none;
+    /* Initially hide checkbox value */
+}
+
+.checkbox-custum input[type="checkbox"]:checked+.checkbox-value {
+    display: block;
+    /* Display checkbox value when checkbox is checked */
+}
+
+.main{
+    /* background-color: #efefef; */
+    min-height: calc(100vh - 140px);
+}
+.radio-value {
+    display: none; /* Initially hide radio button values */
+  }

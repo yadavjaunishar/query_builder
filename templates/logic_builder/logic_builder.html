@@ -1,0 +1,389 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logic Builder</title>
+  <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="{% static 'assets/css/stylesheet.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/redmond/jquery-ui.css" />
+  <style>
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-3">
+          <img src="{% static 'assets/images/Agrotutor.png' %}" class="img-fluid agrotutor-logo" alt="agrotutor-logo">
+        </div>
+        <div class="col-lg-6">
+          <h3 class="fw-bold text-center vertical-align-middle">
+            Agro-Tutor
+          </h3>
+        </div>
+        <div class="col-lg-3">
+          <div class="d-flex justify-content-end">
+            <img src="{% static 'assets/images/user.png' %}" class="img-fluid" width="40px">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="main py-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-3">
+            <h6 class="fw-bold mb-3">Is this parameter depends on other parameters :</h6>
+            <form action="{% url 'savelogicbuilder' %}" class="form" method="POST">
+                {% csrf_token %}
+              <div class="form-check mb-2">
+                <input type="hidden" name="getvaluedata" id="getvaluedata">
+                <input class="form-check-input " name="parametere" value="yes" type="radio" id="yes" onclick="show1(this.value);">
+                <label class="form-check-label " for="flexRadioDefault1">
+                  Yes
+                </label>
+              </div>
+              <div class="form-check mb-2 ">
+                <input class="form-check-input" type="radio" value="no" name="parametere" id="no" onclick="show2(this.value);">
+                <label class="form-check-label" for="no">
+                  No
+                </label>
+              </div>
+              <div class="form hide" id="if-yes">
+                <div class="form-group mb-2">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" name="logicnameyes" id="" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group mb-2">
+                  <label for="select" class="form-label">Select related parameters</label>
+                  <div class="parameters-list">
+                   
+                    <div class="checkbox-custumD mb-1">
+                      <select name="relatedparamlist[]" id="mySelect" class="form-control js-example-basic-multiple" onchange="getoperator()" multiple>
+                         <option value="" disabled>Select Parameter</option>
+                         {% for param in paramlist %}
+                         <option value="{{param.param_id}}"> {{param.param_name}}</option>
+                         {% endfor %}
+                      </select>
+                      <div class="main_data">
+                      <div id="appenddata">
+                      </div>
+                      </div>
+                      <div class="form-group mt-2">
+                         <label for=" "> Condition</label>
+                         <textarea name="" id="conditionidss" cols="" rows="2" class="form-control">
+
+                         </textarea>
+                      </div>
+                      <div class="checkbox-value my-2">
+                        <select name="" id="" class="form-control form-select">
+                          <option value="" selected> Select Your Value</option>
+                          <option value="rice">Rice</option>
+                          <option value="cron">Cron</option>
+                        </select>
+                      </div>
+                    </div>
+                   
+                  </div>
+                  {% comment %} <div class="parameters-list">
+                    <div class="checkbox-custum mb-1">
+                      <input type="checkbox" name="" id="" class="cursor-pointer"> Crop
+                      <div class="checkbox-value my-2">
+                        <!-- <label for="" class="d-block form-label">Crop</label> -->
+                        <select name="" id="" class="form-control form-select">
+                          <option value="" selected> Select Your Value</option>
+                          <option value="rice">Rice</option>
+                          <option value="cron">Cron</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="checkbox-custum mb-1">
+                      <input type="checkbox" name="" id=""> Country
+                      <div class="checkbox-value my-2">
+                        <!-- <label for="" class="d-block form-label">Country</label> -->
+                        <select id="country" name="country" class="form-control">
+                          <option value=""> Select Country</option>
+                          <option value="Afghanistan">Afghanistan</option>
+                          <option value="Åland Islands">Åland Islands</option>
+                          
+                        </select>
+                      </div>
+                    </div>
+                    <div class="checkbox-custum mb-1">
+                      <input type="checkbox" name="" id=""> Soli Type
+                      <div class="checkbox-value my-2">
+                        <!-- <label for="" class="d-block form-label">Soli Type</label> -->
+                        <select name="" id="" class="form-control form-select">
+                          <option value="" selected> Select Your Value</option>
+                          <option value="rice">Rice</option>
+                          <option value="cron">Cron</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="checkbox-custum mb-1">
+                      <input type="checkbox" name="" id=""> Area
+                      <div class="checkbox-value my-2">
+                        <!-- <label for="" class="d-block form-label">Soli Type</label> -->
+                        <input type="number" placeholder="Number" class="form-control">
+                       
+                      </div>
+                    </div>
+                  </div> {% endcomment %}
+                </div>
+                <div class="form-group mb-2">
+                  <label for="name" class="form-label">Value</label>
+                  <input type="text" name="yesvalue" id="" class="form-control" placeholder="Value">
+                </div>
+                <div class="form-group mb-2">
+                  <label for="name" class="form-label">Unit</label>
+                  <input type="text" name="yesunit" id="" class="form-control" placeholder="Unit">
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+              <div class="form hide" id="if-no">
+                <div class="form-group mt-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" name="namess" id="" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group mt-3">
+                  <label for="name" class="form-label">Select type</label>
+                  <div class="parameters-list">
+                    <div class="radio-custom mb-1">
+                      <input type="radio" name="option" class="cursor-pointer" value="1"> Text
+                      <div class="radio-value my-2">
+                        <input type="text" name="optionvaluetext"  class="form-control" placeholder="Text">
+                      </div>
+                    </div>
+                    <div class="radio-custom mb-1">
+                      <input type="radio" name="option" class="cursor-pointer" value="2"> Number
+                      <div class="radio-value my-2">
+                        <input type="number" name="optionvaluenumber"  class="form-control" placeholder="Number">
+                      </div>
+                    </div>
+                    <div class="radio-custom mb-1">
+                      <input type="radio" name="option" class="cursor-pointer" value="3"> Date
+                      <div class="radio-value my-2">
+                        <input type="date" name="optionvaluedate" class="form-control">
+                      </div>
+                    </div>
+                    <div class="radio-custom mb-1">
+                      <input type="radio" name="option" class="cursor-pointer" value="4"> List
+                      <div class="radio-value my-2">
+                        <div class="add_remove_list_container">
+                          <!-- Initial list item -->
+                          <div class="add_remove_list">
+                            <div class="d-flex gap-3 form-group mb-3">
+                              <input type="text" placeholder="List" name="optionvaluearr[]" class="form-control">
+                              <button class="btn btn-success py-1 px-2 add_list" type="button"><i class="fa-solid fa-plus"></i></button>
+                              <!-- <button class="btn btn-success py-1 px-2 remove_list" type="button"><i class="fa-solid fa-minus"></i></button> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="name" class="form-label">Value Per Value</label>
+                    <input type="text" name="pervalue" id="" class="form-control" placeholder="Per Value">
+                  </div>
+                <div class="form-group mt-3">
+                  <label for="name" class="form-label">Unit</label>
+                  <input type="text" name="unitnovalue" id="" class="form-control" placeholder="Unit">
+                </div>
+                <button type="submit" class="btn btn-success mt-3">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer border-top border-dark border-2 py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="mb-0">2024 Agro-Tutor. All Right Reserved</p>
+        </div>
+        <div class="col-md-6">
+          <p class="mb-0 text-end text-dark">
+            <a href="javascript:valid(0)" class="text-dark text-decoration-none">
+              Disclaimer
+            </a>| <a href="javascript:valid(0)" class="text-dark text-decoration-none">Privacy Policy</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.2/dist/umd/popper.min.js"></script>
+  <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+  <script src="{% static "assets/js/timepicker.js" %}" defer></script>
+  <script>
+    $(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+    });
+    </script> 
+    <script>
+      function myfunctionsss() {
+        var parametername = $('.parametername').map(function() { return $(this).val(); }).get();
+        var operatorname = $('.operatorname').map(function() { return $(this).val(); }).get();
+        var parametervalue = $('.parametervalue').map(function() { return $(this).val(); }).get();
+        var paramtypeid = $('.paramtypeid').map(function() { return $(this).val(); }).get();
+        $.ajax({
+            url:'{% url "calculation" %}',
+            type:'POST',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                parametername:parametername,
+                operatorname:operatorname,
+                parametervalue:parametervalue,
+                paramtypeid:paramtypeid,
+            },
+            success: function(response) {
+    
+        var responseArray = response.split(','); // Assuming ',' is the delimiter
+            var modifiedArray = responseArray.map(function(item) {
+                return item.replace(',', '*');
+            });
+            $('#conditionidss').val(modifiedArray);
+           // console.log(modifiedArray);
+        }
+        });
+        }
+    </script>
+    <script>
+       function getoperator(sso) {
+        var selectElement = document.getElementById("mySelect");
+        var selectedOptions = selectElement.selectedOptions;
+        var selectedValues = [];
+
+        for (var i = 0; i < selectedOptions.length; i++) {
+            selectedValues.push(selectedOptions[i].value);
+        }
+        var formattedValues = selectedValues.join(',');
+        // alert(formattedValues)
+
+        $.ajax({
+            url: '{% url "getparameter" %}',
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                paramid: formattedValues 
+            },
+            success: function(response) {
+                $('#appenddata').append(response);
+                //console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+    </script>
+  <script>
+    function show1(sso) {
+      document.getElementById('if-yes').style.display = 'block';
+      document.getElementById('if-no').style.display = 'none';
+      document.getElementById('getvaluedata').value = sso;
+     
+    }
+
+    function show2(sso) {
+      document.getElementById('if-yes').style.display = 'none';
+      document.getElementById('if-no').style.display = 'block';
+      document.getElementById('getvaluedata').value = sso;
+    }
+  </script>
+  <script>
+    const checkboxes = document.querySelectorAll('.checkbox-custum input[type="checkbox"]');
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        const checkboxValue = checkbox.nextElementSibling; // Get the .checkbox-value span next to the checkbox
+        if (checkbox.checked) {
+          checkboxValue.style.display = 'block'; // Display the value span if checkbox is checked
+        } else {
+          checkboxValue.style.display = 'none'; // Hide the value span if checkbox is unchecked
+        }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const radioButtons = document.querySelectorAll('.radio-custom input[type="radio"]');
+
+      radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', () => {
+          const radioValue = radioButton.parentElement.querySelector('.radio-value');
+
+          // Hide all radio button values
+          document.querySelectorAll('.radio-value').forEach(value => {
+            value.style.display = 'none';
+            value.value = '';
+          });
+
+          // Show only the value of the currently checked radio button
+          if (radioButton.checked) {
+            radioValue.style.display = 'block';
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to add new list item
+      function addListItem() {
+        const container = document.querySelector('.add_remove_list_container');
+        const newListItem = document.createElement('div');
+        newListItem.className = 'add_remove_list';
+        newListItem.innerHTML = `
+          <div class="d-flex gap-3 form-group mb-3">
+            <input type="text" placeholder="List" class="form-control" name="optionvaluearr[]">
+            <button class="btn btn-success py-1 px-2 add_list" type="button"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn btn-success py-1 px-2 remove_list" type="button"><i class="fa-solid fa-minus"></i></button>
+          </div>
+        `;
+        container.appendChild(newListItem);
+        // Attach event listeners to the new list item
+        attachEventListeners(newListItem);
+      }
+
+      // Function to remove list item
+      function removeListItem(event) {
+        const listItem = event.target.closest('.add_remove_list');
+        listItem.remove();
+      }
+
+      // Function to attach event listeners to list items
+      function attachEventListeners(element) {
+        element.querySelector('.add_list').addEventListener('click', addListItem);
+        element.querySelector('.remove_list').addEventListener('click', removeListItem);
+      }
+
+      // Attach initial event listeners
+      attachEventListeners(document.querySelector('.add_remove_list'));
+
+    });
+  </script>
+
+</body>
+
+</html>
